@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const fetch = require("node-fetch");
+const fetch = require("node-fetch"); // ✅ Explicitly require node-fetch for compatibility
 
 const app = express();
 app.use(cors()); // Enable CORS
