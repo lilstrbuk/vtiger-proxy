@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 const fetch = require("node-fetch");
-require("dotenv").config(); // Load environment variables
 
 const app = express();
 app.use(cors()); // Enable CORS
@@ -11,16 +10,16 @@ const API_URL = "https://bycliff.od2.vtiger.com/restapi/vtap/api/NewestCaseTest"
 const username = process.env.VTIGER_USERNAME;
 const accessKey = process.env.VTIGER_ACCESS_KEY;
 
-// ✅ Default Route to Confirm Server is Running
+// ✅ Default Route
 app.get("/", (req, res) => {
     res.send("✅ Vtiger Proxy is running! Use /latest-case to fetch data.");
 });
 
-// ✅ API Proxy Route with Detailed Error Logging
+// ✅ API Proxy Route
 app.get("/latest-case", async (req, res) => {
     try {
         if (!username || !accessKey) {
-            throw new Error("Missing VTIGER_USERNAME or VTIGER_ACCESS_KEY in environment variables.");
+            throw new Error("❌ Missing VTIGER_USERNAME or VTIGER_ACCESS_KEY in Render environment variables.");
         }
 
         const response = await fetch(API_URL, {
