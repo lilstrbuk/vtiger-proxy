@@ -1,9 +1,17 @@
 const express = require("express");
 const cors = require("cors");
-const fetch = require("node-fetch"); // ✅ Explicitly require node-fetch for compatibility
+const fetch = require("node-fetch"); // Ensure fetch works on Render
 
 const app = express();
-app.use(cors()); // Enable CORS
+
+// ✅ Configure CORS to Allow Your GitHub Pages URL
+const corsOptions = {
+    origin: "https://your-github-username.github.io", // Replace with your GitHub Pages URL
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions)); // Enable CORS
 
 const PORT = process.env.PORT || 3000;
 const API_URL = "https://bycliff.od2.vtiger.com/restapi/vtap/api/NewestCaseTest";
