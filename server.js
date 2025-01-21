@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const fetch = require("node-fetch");
+require("dotenv").config(); // Load environment variables
 
 const app = express();
 app.use(cors()); // Enable CORS
@@ -10,14 +11,18 @@ const API_URL = "https://bycliff.od2.vtiger.com/restapi/vtap/api/NewestCaseTest"
 const username = process.env.VTIGER_USERNAME;
 const accessKey = process.env.VTIGER_ACCESS_KEY;
 
-// ✅ Default Route to show the server is working
+// ✅ Default Route to Confirm Server is Running
 app.get("/", (req, res) => {
     res.send("✅ Vtiger Proxy is running! Use /latest-case to fetch data.");
 });
 
-// ✅ API Proxy Route
+// ✅ API Proxy Route with Detailed Error Logging
 app.get("/latest-case", async (req, res) => {
     try {
+        if (!username || !accessKey) {
+            throw new Error("Missing VTIGER_USERNAME or VTIGER_ACCESS_KEY in environment variables.");
+        }
+
         const response = await fetch(API_URL, {
             headers: {
                 "Authorization": "Basic " + Buffer.from(username + ":" + accessKey).toString("base64"),
@@ -26,14 +31,16 @@ app.get("/latest-case", async (req, res) => {
         });
 
         if (!response.ok) {
-            throw new Error(`Vtiger API Error: ${response.status} - ${response.statusText}`);
+            const errorText = await response.text();
+            console.error(`Vtiger API Error ${response.status}: ${errorText}`);
+            throw new Error(`Vtiger API Error ${response.status}: ${errorText}`);
         }
 
         const data = await response.json();
         res.json(data);
     } catch (error) {
-        console.error("Error fetching Vtiger case:", error);
-        res.status(500).json({ error: "Failed to fetch case data" });
+        console.error("❌ Error fetching Vtiger case:", error.message);
+        res.status(500).json({ error: "Failed to fetch case data", details: error.message });
     }
 });
 
