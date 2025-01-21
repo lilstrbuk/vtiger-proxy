@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const fetch = require("node-fetch");
-require("dotenv").config(); // Loads environment variables from .env
+require("dotenv").config(); // Load environment variables
 
 const app = express();
 app.use(cors()); // Enable CORS
@@ -11,6 +11,12 @@ const API_URL = "https://bycliff.od2.vtiger.com/restapi/vtap/api/NewestCaseTest"
 const username = process.env.VTIGER_USERNAME;
 const accessKey = process.env.VTIGER_ACCESS_KEY;
 
+// ✅ Default Route to show the server is working
+app.get("/", (req, res) => {
+    res.send("✅ Vtiger Proxy is running! Use /latest-case to fetch data.");
+});
+
+// ✅ API Proxy Route
 app.get("/latest-case", async (req, res) => {
     try {
         const response = await fetch(API_URL, {
@@ -32,4 +38,4 @@ app.get("/latest-case", async (req, res) => {
     }
 });
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
