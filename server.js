@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const fetch = require("node-fetch"); // ✅ Ensure correct import for Node.js 16+
 
 const app = express();
 
