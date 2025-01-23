@@ -5,7 +5,7 @@ const app = express();
 
 // ✅ Configure CORS to Allow Your GitHub Pages Site
 const corsOptions = {
-    origin: "https://lilstrbuk.github.io/vtigertest/", // 🔄 Replace with your GitHub Pages URL
+    origin: "https://lilstrbuk.github.io", // 🔄 Replace with your GitHub Pages URL
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: ["Content-Type", "Authorization"],
 };
